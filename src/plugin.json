@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "panel",
+  "name": "Grafana Chat Panel",
+  "id": "ui-grafanachat-panel",
+  "info": {
+    "keywords": ["panel", "chat", "conversation", "interactive"],
+    "description": "Chat interface panel for grafana dashboards",
+    "author": {
+      "name": "Ui"
+    },
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [],
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=10.0.3",
+    "plugins": []
+  }
+}
