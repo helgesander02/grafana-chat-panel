@@ -1,33 +1,33 @@
-import OpenAI from "openai";
+import { ChatOpenAI } from "@langchain/openai";
+import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 
 class OpenAIService {
-  private openai: OpenAI;
+  private chatModel: ChatOpenAI;
 
   constructor(apiKey?: string) {
-    this.openai = new OpenAI({
+    this.chatModel = new ChatOpenAI({
       apiKey: apiKey || "", 
-      dangerouslyAllowBrowser: true,
+      modelName: "gpt-4o",
+      temperature: 0.7,
     });
   }
 
   updateApiKey(apiKey: string) {
-    this.openai.apiKey = apiKey;
+    this.chatModel.apiKey = apiKey;
   }
 
   async generateBotResponse(userMessage: string): Promise<string> {
     try {
-      const completion = await this.openai.chat.completions.create({
-        model: "gpt-4o",
-        messages: [
-          { role: "system", content: "You are a helpful assistant inside Grafana, answer briefly." },
-          { role: "user", content: userMessage }
-        ],
-        temperature: 0.7
-      });
-      return completion.choices[0]?.message?.content || "I couldn't generate a response.";
+      const messages = [
+        new SystemMessage("You are a helpful assistant inside Grafana, answer briefly."),
+        new HumanMessage(userMessage),
+      ];
+
+      const response = await this.chatModel.invoke(messages);
+      return response.content.toString() || "I couldn't generate a response.";
       
     } catch (err) {
-      console.error("OpenAI API Error:", err);
+      console.error("LangChain API Error:", err);
       return "Sorry, I encountered an error while generating a response.";
     }
   }
